@@ -96,29 +96,18 @@ print("\nЗадание 3\n")
 room = int(input("Введите номер комнаты:"))
 
 # Ищем секцию
-section = 1
-rooms_on_the_Nth_floor = 1
-max_floor = 1
-while True:
-    if room <= rooms_on_the_Nth_floor:
-        break
+floor, section = 1, 1
+rooms_under = 0
+while rooms_under + section**2 < room:
+    rooms_under += section**2
+    floor += section
     section += 1
-    rooms_on_the_Nth_floor += section**2
-    max_floor += section
-print("Комната {}, секция {}, этаж {}-{}".format(room, section, max_floor - section + 1, max_floor))
+print("Комната {}, секция {}, этаж {}-{}".format(room, section, floor, floor + section - 1))
 
-# Ищем этаж
-floor = max_floor - section
-leftmost_room = rooms_on_the_Nth_floor - section**2 + 1
+# Определяем этаж и комнату
+room -= rooms_under + 1
+floor += room // section
+room = room % section + 1
 
-sub_floor = 1
-while leftmost_room + section * sub_floor <= room:
-    sub_floor += 1
-
-floor += sub_floor
-
-# Определяем комнату
-from_left = room - (leftmost_room + section * (sub_floor - 1)) + 1
-
-print(floor, from_left)
+print(floor, room)
 
