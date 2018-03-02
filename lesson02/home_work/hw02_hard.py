@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+print("\nЗадание 1\n")
+
 # Задание-1: уравнение прямой вида y = kx + b задано в виде строки.
 # Определить координату y точки с заданной координатой x.
 
@@ -5,6 +9,19 @@ equation = 'y = -12x + 11111140.2121'
 x = 2.5
 # вычислите и выведите y
 
+a, op, b = (equation.split()[2:])
+a = float(a[:-1])
+b = float(b)
+
+y = a * x
+if op == '+':
+    y += b
+elif op == '-':
+    y -= b
+
+print("y = {}".format(y))
+
+print("\nЗадание 2\n")
 
 # Задание-2: Дата задана в виде строки формата 'dd.mm.yyyy'.
 # Проверить, корректно ли введена дата.
@@ -20,10 +37,31 @@ x = 2.5
 date = '01.11.1985'
 
 # Примеры некорректных дат
-date = '01.22.1001'
-date = '1.12.1001'
-date = '-2.10.3001'
+#date = '01.22.1001'
+#date = '1.12.1001'
+#date = '-2.10.3001'
 
+print(date)
+m31 = [1, 3, 5, 7, 8, 10, 12]
+day, month, year = date.split('.')
+
+answer = 'неверно'
+
+if len(day) == 2 and len(month) == 2 and len(year) == 4:
+    day = int(day)
+    month = int(month)
+    year = int(year)
+
+    if 0 < year < 10000 and 0 < month < 13 and 0 < day < 32:
+        if day == 31 and month not in m31 or day > 28 and month == 2:
+            pass
+        else:
+            answer = 'верно'
+
+print("Дата введена {}.".format(answer))
+
+
+print("\nЗадание 3\n")
 
 # Задание-3: "Перевёрнутая башня" (Задача олимпиадного уровня)
 #
@@ -54,3 +92,33 @@ date = '-2.10.3001'
 #
 # Вход: 11
 # Выход: 5 3
+
+room = int(input("Введите номер комнаты:"))
+
+# Ищем секцию
+section = 1
+rooms_on_the_Nth_floor = 1
+max_floor = 1
+while True:
+    if room <= rooms_on_the_Nth_floor:
+        break
+    section += 1
+    rooms_on_the_Nth_floor += section**2
+    max_floor += section
+print("Комната {}, секция {}, этаж {}-{}".format(room, section, max_floor - section + 1, max_floor))
+
+# Ищем этаж
+floor = max_floor - section
+leftmost_room = rooms_on_the_Nth_floor - section**2 + 1
+
+sub_floor = 1
+while leftmost_room + section * sub_floor <= room:
+    sub_floor += 1
+
+floor += sub_floor
+
+# Определяем комнату
+from_left = room - (leftmost_room + section * (sub_floor - 1)) + 1
+
+print(floor, from_left)
+
