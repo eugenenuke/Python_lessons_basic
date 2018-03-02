@@ -102,7 +102,7 @@ while rooms_under + section**2 < room:
     rooms_under += section**2
     floor += section
     section += 1
-print("Комната {}, секция {}, этаж {}-{}".format(room, section, floor, floor + section - 1))
+#print("Комната {}, секция {}, этаж {}-{}".format(room, section, floor, floor + section - 1))
 
 # Определяем этаж и комнату
 room -= rooms_under + 1
