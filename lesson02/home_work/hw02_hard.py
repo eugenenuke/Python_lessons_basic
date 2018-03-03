@@ -13,6 +13,8 @@ a, op, b = (equation.split()[2:])
 a = float(a[:-1])
 b = float(b)
 
+# Вообще, достаточно посчитать y = a * x + b, но, также, рассмотрим
+# вариант y = a * x - b
 y = a * x
 if op == '+':
     y += b
@@ -34,26 +36,41 @@ print("\nЗадание 2\n")
 #  (т.е. 2 символа для дня, 2 - для месяца, 4 - для года)
 
 # Пример корректной даты
-date = '01.11.1985'
+date = '28.02.1900'
+print(date)
 
 # Примеры некорректных дат
 #date = '01.22.1001'
 #date = '1.12.1001'
 #date = '-2.10.3001'
 
-print(date)
+# Список месяцов, в которых 31 день
 m31 = [1, 3, 5, 7, 8, 10, 12]
-day, month, year = date.split('.')
 
 answer = 'неверно'
+day, month, year = date.split('.')
 
-if len(day) == 2 and len(month) == 2 and len(year) == 4:
+# Проверяем условие №4 и возможность сконвертировать дату в integer
+date = "".join(date.split('.'))
+if date.isnumeric() and len(day) == len(month) == 2 and len(year) == 4:
     day = int(day)
     month = int(month)
     year = int(year)
+    
+    # Проверяем, високосный ли год
+    vis = False
+    if year % 4 == year % 100 == year % 400 == 0:
+        vis = True
+    else:
+        if not year % 4 == year % 100 == 0 and year % 4 == 0:
+            vis = True
 
+    # Определяем, допустимый ли день в феврале
+    bad_feb = month == 2 and (day > 29 or day == 29 and not vis)
+    
+    # Проверяем условия №1-3
     if 0 < year < 10000 and 0 < month < 13 and 0 < day < 32:
-        if day == 31 and month not in m31 or day > 28 and month == 2:
+        if day == 31 and month not in m31 or bad_feb:
             pass
         else:
             answer = 'верно'
