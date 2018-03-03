@@ -36,13 +36,15 @@ print("\nЗадание 2\n")
 #  (т.е. 2 символа для дня, 2 - для месяца, 4 - для года)
 
 # Пример корректной даты
-date = '28.02.1900'
-print(date)
+date = '29.02.2000'
 
 # Примеры некорректных дат
 #date = '01.22.1001'
 #date = '1.12.1001'
 #date = '-2.10.3001'
+#date = '29.02.1900'
+
+print(date)
 
 # Список месяцов, в которых 31 день
 m31 = [1, 3, 5, 7, 8, 10, 12]
@@ -53,27 +55,18 @@ day, month, year = date.split('.')
 # Проверяем условие №4 и возможность сконвертировать дату в integer
 date = "".join(date.split('.'))
 if date.isnumeric() and len(day) == len(month) == 2 and len(year) == 4:
-    day = int(day)
-    month = int(month)
-    year = int(year)
+    day, month, year = (int(i) for i in (day, month, year))
     
     # Проверяем, високосный ли год
-    vis = False
-    if year % 4 == year % 100 == year % 400 == 0:
-        vis = True
-    else:
-        if not year % 4 == year % 100 == 0 and year % 4 == 0:
-            vis = True
+    vis = bool(not year % 4 and (year % 100 == year % 400 == 0 or year % 100))
 
     # Определяем, допустимый ли день в феврале
     bad_feb = month == 2 and (day > 29 or day == 29 and not vis)
     
     # Проверяем условия №1-3
-    if 0 < year < 10000 and 0 < month < 13 and 0 < day < 32:
-        if day == 31 and month not in m31 or bad_feb:
-            pass
-        else:
-            answer = 'верно'
+    if 0 < year < 10000 and 0 < month < 13 and 0 < day < 32 and \
+      not (day == 31 and month not in m31 or bad_feb):
+        answer = 'верно'
 
 print("Дата введена {}.".format(answer))
 
