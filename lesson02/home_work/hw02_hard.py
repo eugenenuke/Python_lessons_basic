@@ -64,8 +64,6 @@ if date.isnumeric() and len(day) == len(month) == 2 and len(year) == 4:
     bad_feb = month == 2 and (day > 29 or day == 29 and not vis)
     
     # Проверяем условия №1-3
-    # год можем не проверять - весь диапазон из 4х цифр допустим
-    # отрицательные значения не проверяем, они отсеиваюся на этапе isnumeric
     if year > 1 and 0 < month < 13 and 0 < day < 32 and \
       not (day == 31 and month not in m31 or bad_feb):
         answer = 'верно'
