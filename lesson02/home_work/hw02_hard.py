@@ -105,21 +105,76 @@ print("\nЗадание 3\n")
 # Вход: 11
 # Выход: 5 3
 
+
+# 1. Вариант математического решения (самый быстрый)
+
 room = int(input("Введите номер комнаты:"))
 
-# Ищем секцию
-floor, section = 1, 1
-rooms_under = 0
-while rooms_under + section**2 < room:
-    rooms_under += section**2
-    floor += section
-    section += 1
-#print("Комната {}, секция {}, этаж {}-{}".format(room, section, floor, floor + section - 1))
+# Количество комнат Sn в секции n и во всех нижних секциях
+# Sn = 1^2 + 2^2 + 3^2 + ... + n^2 => Cумма квадратов натурального ряда
+# https://ru.wikipedia.org/wiki/Квадрат_(алгебра)
+# Sn = n^3/3 + n^2/2 +n/6 = n(n + 1)(2n + 1)/6
+# Зная номер комнаты, можно определить номер секции, в которую входит комната,
+# решив кубическое уравнение 2n^3 + 3n^2 + n - 6Sn = 0
+# https://ru.wikipedia.org/wiki/Формула_Кардано
+
+# Ищем секцию. Т.к, все коэффициенты, кроме последнего фиксированы,
+# можем заранее вычислить некоторые компоненты формулы
+# p = -1 / 4
+q = -3 * room
+Q = (3888 * room * room - 1) / 1728
+section = int((-q / 2 + Q**0.5)**(1/3) + (-q / 2 - Q**0.5)**(1/3) - 0.5) + 1
 
 # Определяем этаж и комнату
-room -= rooms_under + 1
+# 1 + 2 + 3 + 4 + ... = натуральный ряд
+# https://ru.wikipedia.org/wiki/Натуральный_ряд
+# floor = n * (n-1) / 2
+floor = section * (section - 1) // 2 + 1
+room -= round((section - 1)**3/3 + (section - 1)**2/2 + (section - 1)/6) + 1
 floor += room // section
 room = room % section + 1
 
 print(floor, room)
 
+
+# 2. Вариант решения через цикл (самый понятный)
+# room = int(input("Введите номер комнаты:"))
+# 
+# # Ищем секцию
+# floor, section = 1, 1
+# rooms_under = 0
+# while rooms_under + section**2 < room:
+#     rooms_under += section**2
+#     floor += section
+#     section += 1
+# print("Комната {}, секция {}, этаж {}-{}".format(room, section, floor, floor + section - 1))
+# 
+# 
+# # Определяем этаж и комнату
+# room -= rooms_under + 1
+# floor += room // section
+# room = room % section + 1
+# 
+# print(floor, room)
+
+
+
+# 3. Смешанный вариант
+# room = int(input("Введите номер комнаты:"))
+# 
+# # Ищем секцию
+# section = 1
+# while round((section - 1)**3/3 + (section - 1)**2/2 + (section - 1)/6) < room:
+#     section += 1
+# 
+# # Исключаем самую верхнюю секцию, в которой находится комната
+# section -= 1
+# 
+# # Определяем этаж и комнату
+# floor = section * (section - 1) // 2 + 1
+# room -= round((section - 1)**3/3 + (section - 1)**2/2 + (section - 1)/6) + 1
+# floor += room // section
+# room = room % section + 1
+# 
+# print(floor, room)
+# 
