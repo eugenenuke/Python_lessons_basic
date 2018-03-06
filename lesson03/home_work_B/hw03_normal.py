@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Задание - 1
 # Вам даны 2 списка одинаковой длины, в первом списке имена людей, во втором зарплаты,
 # вам необходимо получить на выходе словарь, где ключ - имя, значение - зарплата.
@@ -10,3 +11,19 @@
 #  если скажем эти файлы потом придется передавать.
 # Так же при выводе имя должно быть полностью в верхнем регистре!
 # Подумайте вспоминая урок, как это можно сделать максимально кратко, используя возможности языка Python.
+
+employes = ['Вася', 'Петя', 'Ваня', 'Гриня']
+salaries = [15000, 20000, 25000, 501001]
+print('Входные данные:', employes, salaries, sep='\n')
+
+db = dict(zip(employes, salaries))
+print('Словарь:', db)
+
+out_data = list(map('{0[0]} - {0[1]}\n'.format,
+                    filter(lambda x: x[1] < 500000, db.items())))
+
+with open('salary.txt', 'w', encoding='utf-8') as out_file:
+    out_file.writelines(out_data)
+
+with open('salary.txt', encoding='utf-8') as in_file:
+    print(''.join(in_file.readlines()).upper())
