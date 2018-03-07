@@ -27,7 +27,7 @@ with open('salary.txt', 'w', encoding='utf-8') as out_file:
 
 with open('salary.txt', encoding='utf-8') as in_file:
     in_data = dict(
-        map(lambda y: (y[0], round(float(y[1])*.87, 2)),
+        map(lambda y: (y[0], float(y[1])*.87),
             map(lambda x: x.rstrip().split(' - '), in_file.readlines())
             ))
-    print('\n'.join(map('{0[0]}: {0[1]}'.format, in_data.items())).upper())
+    print('\n'.join(map('{0[0]}: {0[1]:.2f}'.format, in_data.items())).upper())
