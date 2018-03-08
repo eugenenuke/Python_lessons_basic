@@ -76,22 +76,21 @@ for entity in (player, enemy):
     with open(entity['name'] + '.txt', 'w') as ef:
         ef.writelines(dict2str(entity))
 
-player['armor'] = 0
-with open(player['name'] + '.txt', 'r') as pf:
+with open(player['name'] + '.txt') as pf:
     player = str2dict(pf.readlines())
 
-enemy['armor'] = 0
-with open(enemy['name'] + '.txt', 'r') as ef:
+with open(enemy['name'] + '.txt') as ef:
     enemy = str2dict(ef.readlines())
 
 print('Начинаем игру!')
 print(player['name'], '\t', enemy['name'])
-print(round(player['health'], 2), '\t', round(enemy['health'], 2))
+print('{:.2f}\t{:.2f}'.format(player['health'], enemy['health']))
 
 while 0 < player['health'] and 0 < enemy['health']:
     if choice([True, False]):
         attack2(player, enemy)
     else:
         attack2(enemy, player)
-    print(round(player['health'], 2), '\t', round(enemy['health'], 2))
+    print('{:.2f}\t{:.2f}'.format(player['health'], enemy['health']))
+
 print('Победил,', (enemy['name'], player['name'])[player['health'] > 0])
