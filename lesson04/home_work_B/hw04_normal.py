@@ -15,21 +15,21 @@ import re
 name = 'Пупкин василий'
 email = 'te_4_st@test.com'
 
-if re.match('[A-ZА-Я][a-zа-я]+ [A-ZА-Я][a-zа-я]+', name):
+if re.match('[A-ZА-Я][a-zа-я]+ [A-ZА-Я][a-zа-я]+$', name):
     print('Указано корректное имя:', name)
 else:
     print('Неверно указано имя, укажите имя и фамилию через пробел, с заглавной буквы')
 
-if re.match('[a-z_0-9]+@[a-z0-9]+\.(ru|org|com)', email):
+if re.match('[a-z_0-9]+@[a-z0-9]+\.(ru|org|com)$', email):
     print('Указан корректный e-mail:', email)
 else:
     error = []
     if re.search('[A-Z]', email):
         error.append('недопустимо использование заглавных букв')
-    if not re.findall('.+@.+\.(ru|org|com)', email):
-        error.append('недопустимый домен или неверный формат email')
     if re.search('[^a-z0-9@_\.]', email) or re.search('.+@.+_.+', email):
         error.append('недопустимые символы')
+    if not error:
+        error.append('недопустимый домен или неверный формат email')
     print('Неверно указан email:', ', '.join(error))
 
 # Задача - 2:
