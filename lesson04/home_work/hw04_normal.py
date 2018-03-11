@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Задание-1:
 # Вывести символы в нижнем регистре, которые находятся вокруг
 # 1 или более символов в верхнем регистре.
@@ -29,7 +30,7 @@ line = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysmNO'\
 # нужно получить список строк: ['AY', 'NOGI', 'P']
 # Решить задачу двумя способами: с помощью re и без.
 
-line_2 = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysm'\
+line = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysm'\
        'NOGIPHpEMujalpPLNzRWXfwHQqwksrFeipEUlTLeclMwAoktKlfUBJHPsnawvjPhfgewV'\
        'fzKTUfSYtBydXaVIpxWjNKgXANvIoumesCSSvjEGRJosUfuhRRDUuTQwLlJJJDdkVjfSA'\
        'HqnLxooisBDWuxIhyjJaXDYwdoVPnsllMngNlmkpYOlqXEFIxPqqqgAWdJsOvqppOfyIV'\
@@ -44,6 +45,21 @@ line_2 = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysm'\
        'uXBqHFjvihuNGEEFsfnMXTfptvIOlhKhyYwxLnqOsBdGvnuyEZIheApQGOXWeXoLWiDQN'\
        'JFaXiUWgsKQrDOeZoNlZNRvHnLgCmysUeKnVJXPFIzvdDyleXylnKBfLCjLHntltignbQ'\
        'oiQzTYwZAiRwycdlHfyHNGmkNqSwXUrxGC'
+# ['AY', 'NOGI', 'P', 'UBJ', 'K', 'C', 'EG', 'RR', 'S', 'B', 'XE', 'G', 'B', 'U', 'KR', 'I', 'VI', 'SMX', 'ZC', 'T', 'CCEU', 'ZWLF', 'I', 'E', 'SQQZ', 'Q', 'WLALH', 'Q', 'Y', 'SZMWS', 'NGE', 'M', 'E', 'H']
+#line = "GAMkgAYEOmHBSQsSUHKvSfbmxULaysmNOGIPHpEMujalpPLNzRWXfwHQqwksrFeipEUlTLec"
+answer = []
+i = 2
+while i < len(line) - 3:
+    if line[i-2].islower() and line[i-1].islower():
+        j = i
+        while j < len(line) and line[j].isupper():
+            j += 1
+        if j - i > 2:
+            answer.append(line[i:j-2])
+        if j > i:
+            i = j - 1
+    i += 1
+print(answer)
 
 # Задание-3:
 # Напишите скрипт, заполняющий указанный файл (самостоятельно задайте имя файла)

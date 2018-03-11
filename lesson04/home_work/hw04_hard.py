@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Задание-1:
 # Матрицы в питоне реализуются в виде вложенных списков:
 # Пример. Дано:
@@ -12,6 +13,14 @@ matrix = [[1, 0, 8],
 #                  [8, 1, 2]]
 
 # Суть сложности hard: Решите задачу в одну строку
+
+for m in matrix:
+    print(m)
+
+matrix_rotate = [[matrix[y][x] for y in range(len(matrix[0]))] for x in range(len(matrix[0]))]
+
+for m in matrix_rotate:
+    print(m)
 
 # Задание-2:
 # Найдите наибольшее произведение пяти последовательных цифр в 1000-значном числе.

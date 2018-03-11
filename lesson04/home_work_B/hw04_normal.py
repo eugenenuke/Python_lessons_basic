@@ -15,7 +15,7 @@ import re
 name = 'Пупкин василий'
 email = 'te_4_st@test.com'
 
-if re.match('[A-ZА-Я][a-zа-я]+ [A-ZА-Я][a-zа-я]+$', name):
+if re.match('[A-ZЁ-Я][a-zа-ё]+ [A-ZЁ-Я][a-zа-ё]+$', name):
     print('Указано корректное имя:', name)
 else:
     print('Неверно указано имя, укажите имя и фамилию через пробел, с заглавной буквы')
