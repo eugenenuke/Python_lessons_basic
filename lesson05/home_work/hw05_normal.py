@@ -14,3 +14,53 @@
 # Для решения данной задачи используйте алгоритмы из задания easy,
 # оформленные в виде соответствующих функций,
 # и импортированные в данный файл из easy.py
+
+import hw05_easy as helpers
+import os
+
+while True:
+    try:
+        choice = int(input('Выберите действие:\n\
+            1. Перейти в папку\n\
+            2. Просмотреть содержимое текущей папки\n\
+            3. Удалить папку\n\
+            4. Создать папку\n\
+            5. Выход\n>'))
+    except ValueError:
+        print('Введены неверные данные, попробуйте ещё раз')
+        continue
+
+    if choice == 1:
+        chdir = input('Введите название папки для перехода:')
+        if chdir == '':
+            print('Введены неверные данные, попробуйте ещё раз')
+            continue
+        try:
+            os.chdir(chdir)
+            print('Успешно перешли в папку', chdir)
+        except Exception as e:
+            print('Невозможно сменить папку', e)
+
+    if choice == 2:
+        helpers.lscwd()
+
+    if choice == 3:
+        dir_to_purge = input('Введите название для удаляемой папки:')
+        if dir_to_purge == '':
+            print('Введены неверные данные, попробуйте ещё раз')
+            continue
+        res = helpers.rmdir(dir_to_purge)
+        res = 'Папка успешно удалена' if res else 'Невозможно удалить папку'
+        print(res)
+
+    if choice == 4:
+        new_dir = input('Введите название для новой папки:')
+        if new_dir == '':
+            print('Введены неверные данные, попробуйте ещё раз')
+            continue
+        res = helpers.mkdir(new_dir)
+        res = 'Папка успешно создана' if res else 'Невозможно создать папку'
+        print(res)
+
+    if choice == 5:
+        break
