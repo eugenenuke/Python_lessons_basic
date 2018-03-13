@@ -6,6 +6,10 @@ matrix = [[1, 0, 8],
           [3, 4, 1],
           [0, 4, 2]]
           
+matrix = [[1, 0, 8, 9],
+          [3, 4, 1, 5],
+          [7, 6, 1, 0],
+          [0, 4, 2, 3]]
 # Выполнить поворот (транспонирование) матрицы
 # Пример. Результат:
 # matrix_rotate = [[1, 3, 0],
@@ -17,7 +21,8 @@ matrix = [[1, 0, 8],
 for m in matrix:
     print(m)
 
-matrix_rotate = [[matrix[y][x] for y in range(len(matrix[0]))] for x in range(len(matrix[0]))]
+#matrix_rotate = [[matrix[y][x] for y in range(len(matrix[0]))] for x in range(len(matrix[0]))]
+matrix_rotate = list(zip(*matrix))
 
 for m in matrix_rotate:
     print(m)
