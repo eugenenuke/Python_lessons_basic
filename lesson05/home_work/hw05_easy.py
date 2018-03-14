@@ -49,10 +49,14 @@ def lscwd(ftype='a'):
 def f_copy(source, target):
     try:
         res = shutil.copy(source, target)
+        # with open(source) as in_file:
+        #     data = in_file.readlines()
+        # with open(target, 'w') as out_file:
+        #     out_file.writelines(data)
     except Exception as e:
         print('Ошибка при копировании:', e)
     else:
-        print('Файл успешно скопирован в', res)
+        print('Файл успешно скопирован в', target)
 
 
 if __name__ == '__main__':
