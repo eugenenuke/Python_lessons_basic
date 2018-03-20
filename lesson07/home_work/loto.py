@@ -57,3 +57,155 @@
 модуль random: http://docs.python.org/3/library/random.html
 
 """
+
+from random import shuffle
+
+# Количество колонок
+COLS = 9
+
+# Количество рядов у карты
+ROWS = 3
+
+# Количество цифр в ряду
+NUMS_ON_ROW = 5
+
+# Максимальный номер бочёнка
+BARRELS_N = 90
+
+# Ширина одного места для цифры
+N_WIDTH = len(str(BARRELS_N))
+
+
+class LottoSack:
+
+    def __init__(self):
+        self._barrels = [i for i in range(1, BARRELS_N+1)]
+        shuffle(self._barrels)
+
+    def __str__(self):
+        return str(self._barrels)
+
+    def get_barrel(self):
+        if self._barrels:
+            return self._barrels.pop()
+        return None
+
+    def get_remains(self):
+        return len(self._barrels)
+
+
+class LottoCard:
+
+    def __init__(self):
+        pool = [i for i in range(1, BARRELS_N+1)]
+        shuffle(pool)
+        pool = [
+                sorted(pool[:NUMS_ON_ROW]),
+                sorted(pool[NUMS_ON_ROW:NUMS_ON_ROW*2]),
+                sorted(pool[NUMS_ON_ROW*2:NUMS_ON_ROW*3])]
+
+        self._nums = []
+        self._remains = 15
+
+        for row in range(0, ROWS):
+            # Добавляем ряд
+            self._nums.append([])
+            
+            # Определяем места для цифр
+            places = [i for i in range(0, COLS)]
+            shuffle(places)
+            places = places[:5]
+
+            # Заполняем ряд
+            for col in range(0, COLS):
+                if col in places:
+                    self._nums[row].append(pool[row].pop(0))
+                else:
+                    self._nums[row].append('  ')
+
+    def __str__(self):
+        card = '-' * (COLS * (N_WIDTH + 1) - 1) + '\n'
+        for row in self._nums:
+            card += " ".join(map(lambda x: str(x).rjust(N_WIDTH), row))
+            card += '\n'
+        card += '-' * (COLS * (N_WIDTH + 1) - 1) + '\n'
+        return card
+
+    def remove_num(self, num):
+        for row in self._nums:
+            if num in row:
+                row[row.index(num)] = '-'
+                self._remains -= 1
+                return True
+        return False
+
+    def check_num(self, num):
+        for row in self._nums:
+            if num in row:
+                return True
+        return False
+
+    def get_remains(self):
+        return self._remains
+
+
+class LottoPlayer:
+
+    def __init__(self, name):
+        self._card = LottoCard()
+        self._name = name
+
+    def print_card(self):
+        print(self._name)
+        print(self._card)
+
+    def check_num(self, num):
+        return self._card.check_num(num)
+
+    def strike_num_out(self, num):
+        return self._card.remove_num(num)
+
+    def get_remains(self):
+        return self._card.get_remains()
+
+
+class LottoGame:
+
+    def __init__(self):
+        self._player = LottoPlayer('Игрок')
+        self._computer = LottoPlayer('Компьютер')
+        self._sack = LottoSack()
+
+    def start(self):
+        while self._sack.get_remains():
+            if not self._turn():
+                break
+
+    def _turn(self):
+        self._barrel_in_play = self._sack.get_barrel()
+        print('Новый бочонок: {} (осталось {})'.format(
+                self._barrel_in_play, self._sack.get_remains()
+                ))
+        self._player.print_card()
+        self._computer.print_card()
+        answer = input('Зачеркнуть цифру? (y/n)')
+        if answer.lower() == 'y':
+            if not self._player.strike_num_out(self._barrel_in_play):
+                print('Невозможно вычеркнуть, у Вас нет такого номера в карточке. Проигрыш!')
+                return False
+        else:
+            if self._player.check_num(self._barrel_in_play):
+                print('Вы проглядели номер, присутсвующий в вашей карточке. Проигрыш!')
+                return False
+        self._computer.strike_num_out(self._barrel_in_play)
+        if self._player.get_remains() == 0:
+            print('Вы зачеркнули все номера в карточке. Поздравляем, Вы выиграли!')
+            return False
+        if self._computer.get_remains() == 0:
+            print('Компьютер зачеркнул все номера в карточке. Вы проиграли!')
+            return False
+        return True
+
+
+new_game = LottoGame()
+new_game.start()
