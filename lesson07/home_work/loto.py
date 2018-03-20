@@ -60,6 +60,7 @@
 
 from random import shuffle
 
+
 # Количество колонок
 COLS = 9
 
@@ -69,7 +70,7 @@ ROWS = 3
 # Количество цифр в ряду
 NUMS_ON_ROW = 5
 
-# Максимальный номер бочёнка
+# Максимальный номер бочонка
 BARRELS_N = 90
 
 # Ширина одного места для цифры
@@ -105,7 +106,7 @@ class LottoCard:
                 sorted(pool[NUMS_ON_ROW*2:NUMS_ON_ROW*3])]
 
         self._nums = []
-        self._remains = 15
+        self._remains = ROWS * NUMS_ON_ROW
 
         for row in range(0, ROWS):
             # Добавляем ряд
@@ -124,11 +125,10 @@ class LottoCard:
                     self._nums[row].append('  ')
 
     def __str__(self):
-        card = '-' * (COLS * (N_WIDTH + 1) - 1) + '\n'
+        card = ''
         for row in self._nums:
-            card += " ".join(map(lambda x: str(x).rjust(N_WIDTH), row))
-            card += '\n'
-        card += '-' * (COLS * (N_WIDTH + 1) - 1) + '\n'
+            card += " ".join(map(lambda x: str(x).rjust(N_WIDTH), row)) + '\n'
+        card = "{0}{1}{0}".format('-' * (COLS * (N_WIDTH + 1) - 1) + '\n', card)
         return card
 
     def remove_num(self, num):
@@ -183,12 +183,14 @@ class LottoGame:
 
     def _turn(self):
         self._barrel_in_play = self._sack.get_barrel()
+
         print('Новый бочонок: {} (осталось {})'.format(
                 self._barrel_in_play, self._sack.get_remains()
                 ))
         self._player.print_card()
         self._computer.print_card()
         answer = input('Зачеркнуть цифру? (y/n)')
+        
         if answer.lower() == 'y':
             if not self._player.strike_num_out(self._barrel_in_play):
                 print('Невозможно вычеркнуть, \
@@ -199,6 +201,7 @@ class LottoGame:
                 print('Вы проглядели номер, \
                         присутсвующий в вашей карточке. Проигрыш!')
                 return False
+        
         self._computer.strike_num_out(self._barrel_in_play)
         if self._player.get_remains() == 0:
             print('Вы зачеркнули все номера в карточке. \
@@ -208,6 +211,7 @@ class LottoGame:
             print('Компьютер зачеркнул все номера в карточке. \
                     Вы проиграли!')
             return False
+
         return True
 
 
