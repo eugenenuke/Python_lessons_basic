@@ -110,7 +110,7 @@ class LottoCard:
         for row in range(0, ROWS):
             # Добавляем ряд
             self._nums.append([])
-            
+
             # Определяем места для цифр
             places = [i for i in range(0, COLS)]
             shuffle(places)
@@ -191,18 +191,22 @@ class LottoGame:
         answer = input('Зачеркнуть цифру? (y/n)')
         if answer.lower() == 'y':
             if not self._player.strike_num_out(self._barrel_in_play):
-                print('Невозможно вычеркнуть, у Вас нет такого номера в карточке. Проигрыш!')
+                print('Невозможно вычеркнуть, \
+                        у Вас нет такого номера в карточке. Проигрыш!')
                 return False
         else:
             if self._player.check_num(self._barrel_in_play):
-                print('Вы проглядели номер, присутсвующий в вашей карточке. Проигрыш!')
+                print('Вы проглядели номер, \
+                        присутсвующий в вашей карточке. Проигрыш!')
                 return False
         self._computer.strike_num_out(self._barrel_in_play)
         if self._player.get_remains() == 0:
-            print('Вы зачеркнули все номера в карточке. Поздравляем, Вы выиграли!')
+            print('Вы зачеркнули все номера в карточке. \
+                    Поздравляем, Вы выиграли!')
             return False
         if self._computer.get_remains() == 0:
-            print('Компьютер зачеркнул все номера в карточке. Вы проиграли!')
+            print('Компьютер зачеркнул все номера в карточке. \
+                    Вы проиграли!')
             return False
         return True
 
