@@ -125,7 +125,7 @@ class LottoCard:
                 if col in places:
                     self._nums[row].append(pool[row].pop(0))
                 else:
-                    self._nums[row].append('  ')
+                    self._nums[row].append(' ' * N_WIDTH)
 
     def __str__(self):
         card = ''
