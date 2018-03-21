@@ -86,10 +86,13 @@ class LottoSack:
     def __str__(self):
         return str(self._barrels)
 
-    def get_barrel(self):
+    def __iter__(self):
+        return self
+
+    def __next__(self):
         if self._barrels:
             return self._barrels.pop()
-        return None
+        raise StopIteration
 
     def get_remains(self):
         return len(self._barrels)
@@ -131,7 +134,7 @@ class LottoCard:
         card = "{0}{1}{0}".format('-' * (COLS * (N_WIDTH + 1) - 1) + '\n', card)
         return card
 
-    def remove_num(self, num):
+    def strike_num_out(self, num):
         for row in self._nums:
             if num in row:
                 row[row.index(num)] = '-'
@@ -140,10 +143,7 @@ class LottoCard:
         return False
 
     def check_num(self, num):
-        for row in self._nums:
-            if num in row:
-                return True
-        return False
+        return any(num in row for row in self._nums)
 
     def get_remains(self):
         return self._remains
@@ -155,15 +155,14 @@ class LottoPlayer:
         self._card = LottoCard()
         self._name = name
 
-    def print_card(self):
-        print(self._name)
-        print(self._card)
+    def __str__(self):
+        return '\n'.join((self._name, str(self._card)))
 
     def check_num(self, num):
         return self._card.check_num(num)
 
     def strike_num_out(self, num):
-        return self._card.remove_num(num)
+        return self._card.strike_num_out(num)
 
     def get_remains(self):
         return self._card.get_remains()
@@ -171,45 +170,49 @@ class LottoPlayer:
 
 class LottoGame:
 
+    result = {
+        'won': 'Вы зачеркнули все номера в карточке. Поздравляем, Вы выиграли!',
+        'overlooked': 'Вы проглядели номер, присутсвующий в вашей карточке. Проигрыш!',
+        'mistake': 'Невозможно вычеркнуть, у Вас нет такого номера в карточке. Проигрыш!',
+        'lose': 'Компьютер зачеркнул все номера в карточке. Вы проиграли!',
+        'draw': 'Бочонков больше нет. Ничья!'
+        }
+
     def __init__(self):
         self._player = LottoPlayer('Игрок')
         self._computer = LottoPlayer('Компьютер')
         self._sack = LottoSack()
 
     def start(self):
-        while self._sack.get_remains():
-            if not self._turn():
-                break
+        for barrel in self._sack:
+            if not self._turn(barrel):
+                return
+        print(result['draw'])
 
-    def _turn(self):
-        self._barrel_in_play = self._sack.get_barrel()
-
+    def _turn(self, barrel_in_play):
         print('Новый бочонок: {} (осталось {})'.format(
-                self._barrel_in_play, self._sack.get_remains()
+                barrel_in_play, self._sack.get_remains()
                 ))
-        self._player.print_card()
-        self._computer.print_card()
+        print(self._player)
+        print(self._computer)
         answer = input('Зачеркнуть цифру? (y/n)')
         
         if answer.lower() == 'y':
-            if not self._player.strike_num_out(self._barrel_in_play):
-                print('Невозможно вычеркнуть, \
-                        у Вас нет такого номера в карточке. Проигрыш!')
+            if not self._player.strike_num_out(barrel_in_play):
+                print(self.result['mistake'])
                 return False
         else:
-            if self._player.check_num(self._barrel_in_play):
-                print('Вы проглядели номер, \
-                        присутсвующий в вашей карточке. Проигрыш!')
+            if self._player.check_num(barrel_in_play):
+                print(self.result['overlooked'])
                 return False
         
-        self._computer.strike_num_out(self._barrel_in_play)
+        self._computer.strike_num_out(barrel_in_play)
+
         if self._player.get_remains() == 0:
-            print('Вы зачеркнули все номера в карточке. \
-                    Поздравляем, Вы выиграли!')
+            print(self.result['won'])
             return False
         if self._computer.get_remains() == 0:
-            print('Компьютер зачеркнул все номера в карточке. \
-                    Вы проиграли!')
+            print(self.result['lose'])
             return False
 
         return True
