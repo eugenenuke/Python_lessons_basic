@@ -131,7 +131,7 @@ class LottoCard:
         card = ''
         for row in self._nums:
             card += " ".join(map(lambda x: str(x).rjust(N_WIDTH), row)) + '\n'
-        card = "{0}{1}{0}".format('-' * (COLS * (N_WIDTH + 1) - 1) + '\n', card)
+        card = "{1}{0}".format('-' * (COLS * (N_WIDTH + 1) - 1) + '\n', card)
         return card
 
     def strike_num_out(self, num):
@@ -156,7 +156,10 @@ class LottoPlayer:
         self._name = name
 
     def __str__(self):
-        return '\n'.join((self._name, str(self._card)))
+        return '\n'.join((
+            self._name.center(COLS * (N_WIDTH + 1) - 1, '-'),
+            str(self._card)
+            ))
 
     def check_num(self, num):
         return self._card.check_num(num)
