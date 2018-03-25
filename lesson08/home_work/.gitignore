@@ -1,1 +1,5 @@
 app.id
+fetch_modules.sh
+mk_venv.sh
+temp.json
+*.gz
